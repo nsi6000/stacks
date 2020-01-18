@@ -1,0 +1,108 @@
+version: "3.7"
+
+#docker-compose up
+#docker-compose down
+
+#access Airflow with: http://localhost:8080/
+#access Mongo Express with: http://localhost:5050/
+#access Python with: docker exec -it smack_python_1 python3
+#access Spark with: docker exec -it smack_spark_1 sh
+#access Cassandra with: docker exec -it smack_cassandra_1 sh
+#access Cassandra CLI with: docker exec -it smack_cassandra_1 cqlsh
+#access MongoDB with: docker exec -it smack_mongo_1 sh
+#access MongoDB Shell with: docker exec -it smack_mongo_1 mongo
+#access Kafka with: docker exec -it smack_kafka_1 sh
+
+
+services:
+  python:
+    image: python-smack:latest
+    stdin_open: true
+    tty: true
+    ports:
+      - "5000:5000"
+    links:
+      - mongo
+      - cassandra
+      - kafka        #doesn't work.
+#      - spark        #???
+
+  mongo: #mongo / help / show dbs
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+  
+  mongo-express:
+    image: mongo-express:latest
+    links:
+      - mongo
+    ports:
+      - "5050:8081"
+
+  cassandra: #cqlsh | help | show version; | show host; | clear/cls | exit
+    image: cassandra:latest
+    ports:
+      - "9042:9042"
+
+#Not working: IPAddressError : invalid IP address.
+#  cassandra-web: #fmarslan/cassandra-web-ui   |   delermando/docker-cassandra-web
+#    image: metavige/cassandra-web
+#    links:
+#      - cassandra
+#    ports:
+#      - "3000:3000"
+#    environment:
+#      - CASSANDRA_HOST=192.168.0.1:9042
+#      - CASSANDRA_USER=cassandra
+#      - CASSANDRA_PASSWORD=cassandra
+
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    ports:
+      - "2181:2181"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+  kafka:
+    image: bitnami/kafka:latest
+    links:
+      - zookeeper
+#    volumes:
+#       - ./kafka-producer/build/libs:/app
+#       - ./kafka-producer/script:/script
+    ports:
+      - "9092:9092"
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+#      - KAFKA=localhost:9092
+#      - ZOOKEEPER=localhost:2181
+
+
+#  spark:
+#    image: bitnami/spark
+#    #command: ./bin/spark-shell --master local[2] #scala-cli. :quit or :q :help
+#    #command: ./bin/pyspark --master local[2] #python-cli. exit() or quit() help()
+#    #command: ./bin/run-example SparkPi 10
+#    #command: ./bin/spark-submit examples/src/main/python/pi.py 10
+##    environment:
+##        - MASTER=spark://172.18.0.4:7077
+##    depends_on:
+##      - kafka
+##      - cassandra
+##    volumes:
+##      - ./spark-consumer/build/libs:/app
+##      - ./spark-consumer/script:/script
+#    ports:
+#      - "4040:4040"
+#      - "4041:4041"
+#      - "4042:4042"
+#    #command: tail -F anything
+#    command: sleep infinity
+
+#  airflow: #STUDIO: http://localhost:8080/
+#    image: puckel/docker-airflow
+#    ports:
+#      - "8080:8080"
+#    command: webserver
+
