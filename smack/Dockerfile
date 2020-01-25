@@ -19,7 +19,7 @@ RUN apk add py3-pip #pip
 RUN pip3 install Faker #faker
 RUN pip3 install msgpack #messagepack
 RUN pip3 install pprint
-RUN pip3 install coala-bears #coala linter
+#RUN pip3 install coala-bears #coala linter
 RUN pip3 install proselint #proselint
 RUN pip3 install pylint
 RUN pip3 install jsonschema #JSON schema validator
@@ -27,7 +27,7 @@ RUN pip3 install jsonschema #JSON schema validator
 #SMACK
 RUN pip3 install pymongo #mongodb
 RUN pip3 install cassandra-driver #Cassandra / ScyllaDB
-RUN pip3 install pyspark #Spark
+#RUN pip3 install pyspark #Spark
 RUN pip3 install confluent-kafka #Kafka
 
 
