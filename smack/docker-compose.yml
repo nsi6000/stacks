@@ -22,8 +22,8 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - mongo-volume: /mongo
-      - cassandra-volume: /cassandra
+      - mongo-volume:/mongo
+      - cassandra-volume:/cassandra
     links:
       - mongo
       - cassandra
@@ -35,7 +35,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - mongo-volume: /mongo
+      - mongo-volume:/mongo
   
   mongo-express:
     image: mongo-express:latest
@@ -49,7 +49,7 @@ services:
     ports:
       - "9042:9042"
     volumes:
-      - cassandra-volume: /cassandra
+      - cassandra-volume:/cassandra
 
 #Not working: IPAddressError : invalid IP address.
 #  cassandra-web: #fmarslan/cassandra-web-ui   |   delermando/docker-cassandra-web
