@@ -112,7 +112,7 @@ services:
   airflow: #STUDIO: http://localhost:8080/
     image: puckel/docker-airflow
     volumes:
-      - airflow-volume:~/dags
+      - airflow-volume:/usr/local/airflow/dags
     ports:
       - "8080:8080"
     command: webserver
