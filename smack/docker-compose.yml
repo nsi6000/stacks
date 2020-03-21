@@ -25,10 +25,12 @@ services:
       - mongo-volume:/mongo
       - cassandra-volume:/cassandra
       - airflow-volume:/airflow
+      - prefect-volume:/prefect
     links:
       - mongo
       - cassandra
       - airflow
+      - prefect
       - kafka        #doesn't work.
 #      - spark        #???
 
@@ -117,7 +119,15 @@ services:
       - "8080:8080"
     command: webserver
 
+  prefect:
+    image: prefecthq/prefect:latest
+    volumes:
+      - prefect-volume:/home
+    command: sleep infinity
+
 volumes:
   mongo-volume:
   cassandra-volume:
   airflow-volume:
+  prefect-volume:
+
