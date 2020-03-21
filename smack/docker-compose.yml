@@ -24,9 +24,11 @@ services:
     volumes:
       - mongo-volume:/mongo
       - cassandra-volume:/cassandra
+      - airflow-volume:/airflow
     links:
       - mongo
       - cassandra
+      - airflow
       - kafka        #doesn't work.
 #      - spark        #???
 
@@ -107,12 +109,15 @@ services:
 #    #command: tail -F anything
 #    command: sleep infinity
 
-#  airflow: #STUDIO: http://localhost:8080/
-#    image: puckel/docker-airflow
-#    ports:
-#      - "8080:8080"
-#    command: webserver
+  airflow: #STUDIO: http://localhost:8080/
+    image: puckel/docker-airflow
+    volumes:
+      - airflow-volume:~/dags
+    ports:
+      - "8080:8080"
+    command: webserver
 
 volumes:
   mongo-volume:
   cassandra-volume:
+  airflow-volume:
