@@ -10,7 +10,7 @@ RUN apk add vim
 RUN apk add git
 RUN apk add wget
 RUN apk add gcc
-
+RUN apk add libc-dev #required to compile with GCC.
 
 #Python
 #Python standard library: os, gzip, curses, csv, json, pprint, unittest, pydoc, queue, re, uuid, tkinter, time, sqlite3, dbm.
